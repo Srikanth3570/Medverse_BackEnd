@@ -125,6 +125,8 @@ public class RegistrationController {
 
         return ResponseEntity.ok("Password reset link sent to your email.");
     }
+   
+
 
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {

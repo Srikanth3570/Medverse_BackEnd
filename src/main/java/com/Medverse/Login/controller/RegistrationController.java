@@ -80,7 +80,6 @@ public class RegistrationController {
             System.out.println("User not found for email: " + user.getEmail());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
-
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
             return ResponseEntity.ok("Login successful!");
         } else {

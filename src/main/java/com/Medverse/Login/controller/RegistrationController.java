@@ -88,7 +88,7 @@ public class RegistrationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid email or password"));
         }
-
+                                                                                
         // Verify password
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
             // Convert to DTO

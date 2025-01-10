@@ -88,7 +88,7 @@ public class RegistrationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid email or password"));
         }
-                                                                                
+
         // Verify password
         if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
             // Convert to DTO
@@ -125,6 +125,8 @@ public class RegistrationController {
 
         return ResponseEntity.ok("Password reset link sent to your email.");
     }
+   
+
 
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) {

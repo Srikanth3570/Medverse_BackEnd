@@ -33,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable())   //cross side request forgrey cyber attack 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/home/register","/home/login","/home/forget-password","/home/reset-password").permitAll()
                 .anyRequest().authenticated()

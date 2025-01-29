@@ -1,4 +1,3 @@
-
 package com.Medverse.Login.Service;
 
 import java.time.LocalDateTime;
@@ -12,13 +11,13 @@ import com.Medverse.Login.Repo.RegistrationRepo;
 @Service
 public class RegistrationService {
 
-    private final RegistrationRepo registrationRepo; 
-    private final PasswordEncoder passwordEncoder;  //BcryptoPasswordEncoder --> 
+    private final RegistrationRepo registrationRepo;
+    private final PasswordEncoder passwordEncoder;
 
     public RegistrationService(RegistrationRepo registrationRepo, PasswordEncoder passwordEncoder) {
         this.registrationRepo = registrationRepo;
         this.passwordEncoder = passwordEncoder;
-    } 
+    }
 
     // Save the RegistrationEntity without encoding the password
     public RegistrationEntity save(RegistrationEntity user) {
@@ -28,7 +27,7 @@ public class RegistrationService {
     // Register the user by encoding the password and then saving the user
     public RegistrationEntity registerUser(RegistrationEntity user) {
         // Encode the password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword())); 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return registrationRepo.save(user);  // Save to the database
     }
 
@@ -59,3 +58,4 @@ public class RegistrationService {
     }
 //    ...............................................................................................................................................
 }
+

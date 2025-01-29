@@ -1,3 +1,4 @@
+
 package com.Medverse.Login.Repo;
 
 import java.util.Optional;
@@ -17,3 +18,4 @@ public interface RegistrationRepo extends JpaRepository<RegistrationEntity, Long
 //..........................................................................................................
 
 }
+

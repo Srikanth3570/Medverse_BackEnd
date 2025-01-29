@@ -1,4 +1,3 @@
-
 package com.Medverse.Login.Entity;
 
 import java.time.LocalDate;
@@ -21,6 +20,7 @@ import jakarta.validation.constraints.NotNull;
 public class RegistrationEntity {
 
     @Id
+    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
@@ -63,8 +63,6 @@ public class RegistrationEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
- 
-    
     
 //    forgetpassword details...........................................................................................
     
@@ -89,7 +87,11 @@ public class RegistrationEntity {
     }
 //    ..............................................................................................................
     
-        
+    // Default Constructor
+    public RegistrationEntity() {
+        super();
+    }
+
     // Parameterized Constructor
     public RegistrationEntity(Long userId, String firstName, String lastName, String email, String password,
                               String phoneNumber, String address, LocalDate dob, Gender gender, String profilePic, Role role) {
@@ -105,13 +107,8 @@ public class RegistrationEntity {
         this.profilePic = profilePic;
         this.role = role;
     }
-      
-    public RegistrationEntity() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
-	// Getters and Setters
+    // Getters and Setters
     public Long getUserId() {
         return userId;
     }

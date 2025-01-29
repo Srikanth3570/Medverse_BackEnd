@@ -33,9 +33,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())   //cross side request forgrey cyber attack 
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/home/register","/home/login","/home/forget-password","/home/reset-password").permitAll()
+                .requestMatchers("/home/register","/home/login","/home/forget-password","/home/reset-password","/appointments","/api/payments").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

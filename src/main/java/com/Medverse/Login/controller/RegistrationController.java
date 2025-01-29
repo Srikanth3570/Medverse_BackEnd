@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Medverse.Login.Entity.RegistrationEntity;
-import com.Medverse.Login.Entity.UserDTO;
 import com.Medverse.Login.Service.RegistrationService;
 
 import jakarta.validation.Valid;
@@ -25,91 +24,98 @@ import jakarta.validation.Valid;
 @CrossOrigin
 @RequestMapping("/home")
 public class RegistrationController {
-
+    
     private final RegistrationService registrationService;
     private final PasswordEncoder passwordEncoder;
-
+    
     public RegistrationController(RegistrationService registrationService, PasswordEncoder passwordEncoder) {
         this.registrationService = registrationService;
         this.passwordEncoder = passwordEncoder;
     }
-
+    
+//    @PostMapping("/register")
+//    public ResponseEntity<String> register(@RequestBody RegistrationEntity user) {
+//        if (registrationService.UserEmail(user.getEmail()) != null) {
+//            return ResponseEntity.status(409).body("User already exists!");
+//        }
+//
+//        // Encode the password before saving
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//
+//        // Save the user with the encoded password
+//        RegistrationEntity savedUser = registrationService.save(user);
+//        return ResponseEntity.ok("Registration successful with ID: " + savedUser.getUserId());
+//    }
+    
+//    @PostMapping("/register")
+//    public ResponseEntity<String> register(@Valid @RequestBody RegistrationEntity user, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            // Log errors to the console
+//            bindingResult.getFieldErrors().forEach(error ->
+//                System.err.println("Field: " + error.getField() + " - Error: " + error.getDefaultMessage())
+//            );
+//
+//            // Return validation errors to the client
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                                 .body("Validation errors: " + bindingResult.getFieldErrors());
+//        }
+//
+//        if (registrationService.UserEmail(user.getEmail()) != null) {
+//            return ResponseEntity.status(409).body("User already exists!");
+//        }
+//
+//        // Encode the password before saving
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//
+//        // Save the user with the encoded password
+//        RegistrationEntity savedUser = registrationService.save(user);
+//        return ResponseEntity.ok("Registration successful with ID: " + savedUser.getUserId());
+//    }
+//    
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@Valid @RequestBody RegistrationEntity user, BindingResult bindingResult) {
-        // Handle validation errors
+    public ResponseEntity<?> register(@Valid @RequestBody RegistrationEntity user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            // Collect all validation errors
             Map<String, String> errors = new HashMap<>();
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errors.put(error.getField(), error.getDefaultMessage());
             }
-            // Wrap errors in a JSON structure
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("status", "error", "errors", errors));
+
+            // Return errors as a JSON response
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
 
-        // Check if user already exists
         if (registrationService.UserEmail(user.getEmail()) != null) {
-            // Return JSON error message
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Map.of("status", "error", "message", "User already exists!"));
+            return ResponseEntity.status(409).body("User already exists!");
         }
 
-        // Encode password and save user
+        // Encode the password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Save the user with the encoded password
         RegistrationEntity savedUser = registrationService.save(user);
-
-        // Convert to DTO and return success response
-        UserDTO userDTO = new UserDTO(savedUser);
-        return ResponseEntity.ok(Map.of("status", "success", "data", userDTO));
+        return ResponseEntity.ok("Registration successful with ID: " + savedUser.getUserId());
     }
-
-    // @PostMapping("/login")
-    // public ResponseEntity<String> login(@RequestBody RegistrationEntity user) {
-    // RegistrationEntity foundUser =
-    // registrationService.UserEmail(user.getEmail());
-    //
-    // if (foundUser != null && passwordEncoder.matches(user.getPassword(),
-    // foundUser.getPassword())) {
-    // return ResponseEntity.ok("Login successful!");
-    // }
-    // return ResponseEntity.status(401).body("Invalid email or password");
-    // }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody RegistrationEntity user) {
-        // Log input data
-        System.out.println("Attempting login for email: " + user.getEmail());
-
-        // Check if user exists
+    public ResponseEntity<String> login(@RequestBody RegistrationEntity user) {
         RegistrationEntity foundUser = registrationService.UserEmail(user.getEmail());
-        if (foundUser == null) {
-            System.out.println("User not found for email: " + user.getEmail());
-            // Return JSON error response
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid email or password"));
-        }
 
-        // Verify password
-        if (passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
-            // Convert to DTO
-            UserDTO userDTO = new UserDTO(foundUser); // Assuming UserDTO constructor takes a RegistrationEntity
-
-            // Return success response with userDTO
-            return ResponseEntity.ok(Map.of("status", "success", "data", userDTO));
-        } else {
-            System.out.println("Password mismatch for email: " + user.getEmail());
-            // Return JSON error response for password mismatch
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid email or password"));
+        if (foundUser != null && passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
+            return ResponseEntity.ok("Login successful!");
         }
+        return ResponseEntity.status(401).body("Invalid email or password");
     }
+   
 
-    // forget
-    // password............................................................................................................
+    
+    
+//    forget password............................................................................................................
 
+    
     @PostMapping("/forget-password")
     public ResponseEntity<String> forgotPassword(@RequestBody String email) {
-        System.out.println("Received email: " + email); // Debugging line
+        System.out.println("Received email: " + email);  // Debugging line
         RegistrationEntity user = registrationService.UserEmail(email);
         if (user == null) {
             return ResponseEntity.status(404).body("User not found");
@@ -125,7 +131,6 @@ public class RegistrationController {
 
         return ResponseEntity.ok("Password reset link sent to your email.");
     }
-   
 
 
     @PostMapping("/reset-password")
@@ -145,7 +150,6 @@ public class RegistrationController {
         registrationService.updatePassword(user, newPassword);
         return ResponseEntity.ok("Password reset successfully");
     }
-    // .........................................................................................................................
-
+//    .........................................................................................................................
+    
 }
-

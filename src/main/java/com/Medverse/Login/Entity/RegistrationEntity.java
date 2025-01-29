@@ -20,8 +20,9 @@ import jakarta.validation.constraints.NotNull;
 public class RegistrationEntity {
 
     @Id
+    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Integer userId;
 
     @NotBlank(message = "First name is required")
     @Column(nullable = false, length = 255)
@@ -62,8 +63,6 @@ public class RegistrationEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
- 
-    
     
 //    forgetpassword details...........................................................................................
     
@@ -88,9 +87,13 @@ public class RegistrationEntity {
     }
 //    ..............................................................................................................
     
-        
+    // Default Constructor
+    public RegistrationEntity() {
+        super();
+    }
+
     // Parameterized Constructor
-    public RegistrationEntity(Long userId, String firstName, String lastName, String email, String password,
+    public RegistrationEntity(Integer userId, String firstName, String lastName, String email, String password,
                               String phoneNumber, String address, LocalDate dob, Gender gender, String profilePic, Role role) {
         this.userId = userId;
         this.firstName = firstName;
@@ -104,18 +107,13 @@ public class RegistrationEntity {
         this.profilePic = profilePic;
         this.role = role;
     }
-      
-    public RegistrationEntity() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
-	// Getters and Setters
-    public Long getUserId() {
+    // Getters and Setters
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

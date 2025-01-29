@@ -19,6 +19,24 @@ import jakarta.persistence.Table;
 
 
 public class Appointment {
+	
+	public Appointment(Integer appointmentId, RegistrationEntity userId, Integer doctorId, Integer hospitalId,
+			LocalDateTime appointmentDateTime, Status status, String reasonForVisit, String notes) {
+		super();
+		this.appointmentId = appointmentId;
+		this.userId = userId;
+		this.doctorId = doctorId;
+		this.hospitalId = hospitalId;
+		this.appointmentDateTime = appointmentDateTime;
+		this.status = status;
+		this.reasonForVisit = reasonForVisit;
+		this.notes = notes;
+	}
+
+	public Appointment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +44,6 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name="userId" , referencedColumnName = "userId", nullable = false)
-//    @Column(nullable = false)
     private RegistrationEntity userId;
 
     @Column(nullable = false)
@@ -113,26 +130,5 @@ public class Appointment {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
-	}
-
-	public Appointment(Integer appointmentId, RegistrationEntity userId, Integer doctorId, Integer hospitalId,
-			LocalDateTime appointmentDateTime, Status status, String reasonForVisit, String notes) {
-		super();
-		this.appointmentId = appointmentId;
-		this.userId = userId;
-		this.doctorId = doctorId;
-		this.hospitalId = hospitalId;
-		this.appointmentDateTime = appointmentDateTime;
-		this.status = status;
-		this.reasonForVisit = reasonForVisit;
-		this.notes = notes;
-	}
-
-	public Appointment() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-    
-    
+	}   
 }

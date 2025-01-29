@@ -119,5 +119,3 @@ public class UserDTO {
 		
 	    // Getters and setters (optional, if required)
 	}
-
-

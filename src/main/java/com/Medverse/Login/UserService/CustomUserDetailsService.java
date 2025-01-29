@@ -14,7 +14,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final RegistrationRepo registrationRepo;
 
-    public CustomUserDetailsService(RegistrationRepo registrationRepo) {   
+    public CustomUserDetailsService(RegistrationRepo registrationRepo) {
         this.registrationRepo = registrationRepo;
     }
 

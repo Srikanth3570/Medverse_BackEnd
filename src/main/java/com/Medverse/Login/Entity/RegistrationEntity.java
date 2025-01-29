@@ -22,7 +22,7 @@ public class RegistrationEntity {
     @Id
     
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Long userId;
 
     @NotBlank(message = "First name is required")
     @Column(nullable = false, length = 255)
@@ -93,7 +93,7 @@ public class RegistrationEntity {
     }
 
     // Parameterized Constructor
-    public RegistrationEntity(Integer userId, String firstName, String lastName, String email, String password,
+    public RegistrationEntity(Long userId, String firstName, String lastName, String email, String password,
                               String phoneNumber, String address, LocalDate dob, Gender gender, String profilePic, Role role) {
         this.userId = userId;
         this.firstName = firstName;
@@ -109,11 +109,11 @@ public class RegistrationEntity {
     }
 
     // Getters and Setters
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

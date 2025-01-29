@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.Medverse.Login.Entity.RegistrationEntity;
 
 @Repository
-public interface RegistrationRepo extends JpaRepository<RegistrationEntity, Integer> {  // Use Integer as the type for the ID
+public interface RegistrationRepo extends JpaRepository<RegistrationEntity, Long> {  // Use Integer as the type for the ID
 
     Optional<RegistrationEntity> findByEmail(String email);  // Find user by email (case-sensitive by default)
 //    forget password...................................................................................

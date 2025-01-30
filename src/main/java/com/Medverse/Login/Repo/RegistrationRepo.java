@@ -5,15 +5,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.Medverse.Login.Entity.RegistrationEntity;
+import com.Medverse.Login.Entity.Appointment;
+import com.Medverse.Login.Entity.PatientEntity;
 
 @Repository
-public interface RegistrationRepo extends JpaRepository<RegistrationEntity, Long> {  // Use Integer as the type for the ID
+public interface RegistrationRepo extends JpaRepository<PatientEntity, Long> {  // Use Integer as the type for the ID
 
-    Optional<RegistrationEntity> findByEmail(String email);  // Find user by email (case-sensitive by default)
-//    forget password...................................................................................
- 
-    Optional<RegistrationEntity> findByResetPasswordToken(String token);
-//..........................................................................................................
-
+    Optional<PatientEntity> findByEmail(String email);  // Find user by email (case-sensitive by default)
 }
+

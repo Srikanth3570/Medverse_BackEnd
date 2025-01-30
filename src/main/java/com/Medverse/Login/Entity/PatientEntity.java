@@ -1,4 +1,3 @@
-
 package com.Medverse.Login.Entity;
 
 import java.time.LocalDate;

@@ -2,7 +2,7 @@
 package com.Medverse.Login.Entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,28 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Registration")
-public class RegistrationEntity {
+public class PatientEntity {
+	
+	  // Parameterized Constructor
+    public PatientEntity(Long userId, String firstName, String lastName, String email, String password,
+                              String phoneNumber, String address, LocalDate dob, Gender gender, String profilePic, Role role) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.dob = dob;
+        this.gender = gender;
+        this.profilePic = profilePic;
+        this.role = role;
+    }
+      
+    public PatientEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,51 +86,6 @@ public class RegistrationEntity {
     private Role role;
  
     
-    
-//    forgetpassword details...........................................................................................
-    
-    private String resetPasswordToken;
-    private LocalDateTime tokenExpirationTime;
-
-    // Getters and Setters for new fields
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
-    }
-
-    public LocalDateTime getTokenExpirationTime() {
-        return tokenExpirationTime;
-    }
-
-    public void setTokenExpirationTime(LocalDateTime tokenExpirationTime) {
-        this.tokenExpirationTime = tokenExpirationTime;
-    }
-//    ..............................................................................................................
-    
-        
-    // Parameterized Constructor
-    public RegistrationEntity(Long userId, String firstName, String lastName, String email, String password,
-                              String phoneNumber, String address, LocalDate dob, Gender gender, String profilePic, Role role) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.dob = dob;
-        this.gender = gender;
-        this.profilePic = profilePic;
-        this.role = role;
-    }
-      
-    public RegistrationEntity() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	// Getters and Setters
     public Long getUserId() {
@@ -213,7 +189,6 @@ public class RegistrationEntity {
     public enum Gender {
         Male, Female, Other
     }
-
     public enum Role {
         Patient, Doctor, Admin
     }

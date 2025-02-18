@@ -9,12 +9,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Medverse.Login.Entity.DoctorEntity;
 import com.Medverse.Login.Entity.PatientEntity;
+import com.Medverse.Login.Exception.DoctorNotFoundException;
 import com.Medverse.Login.Service.RegistrationService;
 
 import jakarta.validation.Valid;
@@ -82,6 +86,19 @@ public class PatientController {
             System.out.println("Password mismatch for email: " + user.getEmail());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid email or password"));
+        }
+    }
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updatePatient(@PathVariable Long id, @Valid @RequestBody PatientEntity updatedPatient, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors());
+        }
+        try {
+            PatientEntity patient = registrationService.updatePatient(id, updatedPatient);
+            return ResponseEntity.ok(patient);
+        } catch (DoctorNotFoundException ex) {
+            return ResponseEntity.status(404).body("Patient not found with ID: " + id);
         }
     }
 

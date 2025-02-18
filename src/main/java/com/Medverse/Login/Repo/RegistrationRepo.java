@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.Medverse.Login.Entity.Appointment;
+
 import com.Medverse.Login.Entity.PatientEntity;
 
 @Repository

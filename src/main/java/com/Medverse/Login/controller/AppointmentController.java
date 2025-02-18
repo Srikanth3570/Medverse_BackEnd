@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Medverse.Login.Entity.Appointment;
+import com.Medverse.Login.Entity.DoctorEntity;
 import com.Medverse.Login.Entity.PatientEntity;
-import com.Medverse.Login.Exception.AppointmentNotFoundException;
+import com.Medverse.Login.Repo.DoctorRepo;
 import com.Medverse.Login.Repo.RegistrationRepo;
 import com.Medverse.Login.Service.AppointmentService;
 
@@ -31,6 +32,9 @@ public class AppointmentController {
 
     @Autowired
     private RegistrationRepo patientRepository;
+    
+    @Autowired
+    private DoctorRepo doctorRepository;
 
     @GetMapping
     public ResponseEntity<List<Appointment>> getAllAppointments() {
@@ -72,6 +76,14 @@ public class AppointmentController {
         
         // Set the full patient entity on the appointment
         appointment.setUserId(patient);
+
+        // Ensure doctor exists before creating the appointment
+        Long doctorId = appointment.getDoctorId().getDoctorId();  // Fetch the doctor ID
+        DoctorEntity doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with ID " + doctorId));
+        
+        // Set the full doctor entity on the appointment
+        appointment.setDoctorId(doctor);
 
         // Save the new appointment
         Appointment savedAppointment = service.createAppointment(appointment);

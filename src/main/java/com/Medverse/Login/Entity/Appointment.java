@@ -7,9 +7,14 @@ import jakarta.persistence.*;
 @Table(name = "appointments")
 public class Appointment {
 
-    public Appointment() { }
+    
 
-    public Appointment(Long appointmentId, PatientEntity userId, Long doctorId, Long hospitalId,
+    public Appointment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Appointment(Long appointmentId, PatientEntity userId, DoctorEntity doctorId, Long hospitalId,
                        LocalDateTime appointmentDateTime, Status status, String reasonForVisit, String notes) {
         this.appointmentId = appointmentId;
         this.userId = userId;
@@ -29,8 +34,9 @@ public class Appointment {
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
     private PatientEntity userId;
 
-    @Column(nullable = false)
-    private Long doctorId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctorId", referencedColumnName = "doctorId", nullable = false)
+    private DoctorEntity doctorId;
 
     @Column(nullable = false)
     private Long hospitalId;
@@ -68,11 +74,11 @@ public class Appointment {
         this.userId = userId;
     }
 
-    public Long getDoctorId() {
+    public DoctorEntity getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(Long doctorId) {
+    public void setDoctorId(DoctorEntity doctorId) {
         this.doctorId = doctorId;
     }
 

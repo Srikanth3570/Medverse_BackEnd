@@ -1,5 +1,7 @@
 package com.Medverse.Login.Entity;
 
+import java.time.LocalDate;
+
 import com.Medverse.Login.Entity.PatientEntity.Gender;
 import com.Medverse.Login.Entity.PatientEntity.Role;
 
@@ -14,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "doctors")
@@ -21,7 +24,7 @@ public class DoctorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long doctorId;
+    private Long doctorId;
 
     @NotBlank(message = "First name is mandatory")
     private String firstName;
@@ -49,12 +52,16 @@ public class DoctorEntity {
     @NotBlank(message = "Availability schedule is mandatory")
     private String availabilitySchedule;
 
-    private long hospitalId;
+    private Long hospitalId;
 
     @NotBlank(message = "MCR number is mandatory")
+    @Column(nullable = false, unique = true)
     private String mcrNumber;
+    
+    @NotNull(message = "Date of birth is required")
+    private LocalDate dob;
 
-    @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
     private Role role;
 
     @Enumerated(EnumType.STRING)
@@ -67,40 +74,44 @@ public class DoctorEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	// Constructor with all fields (excluding password, as it will be set later)
-    public DoctorEntity(long doctorId, @NotBlank(message = "First name is mandatory") String firstName,
-                        @NotBlank(message = "Last name is mandatory") String lastName,
-                        @Email(message = "Email should be valid") @NotBlank(message = "Email is mandatory") String email,
-                        @NotBlank(message = "Password is required") String password,
-                        @NotBlank(message = "Specialization is mandatory") String specialization,
-                        @Min(value = 0, message = "Experience should be positive") int experienceYears,
-                        @NotBlank(message = "Phone number is mandatory") String phoneNumber,
-                        @NotBlank(message = "Availability schedule is mandatory") String availabilitySchedule, long hospitalId,
-                        @NotBlank(message = "MCR number is mandatory") String mcrNumber, Role role, Gender gender) {
-        this.doctorId = doctorId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.specialization = specialization;
-        this.experienceYears = experienceYears;
-        this.phoneNumber = phoneNumber;
-        this.availabilitySchedule = availabilitySchedule;
-        this.hospitalId = hospitalId;
-        this.mcrNumber = mcrNumber;
-        this.role = role;
-        this.gender = gender;
-    }
+    public DoctorEntity(Long doctorId, @NotBlank(message = "First name is mandatory") String firstName,
+			@NotBlank(message = "Last name is mandatory") String lastName,
+			@Email(message = "Email should be valid") @NotBlank(message = "Email is mandatory") String email,
+			@NotBlank(message = "Password is required") String password,
+			@NotBlank(message = "Specialization is mandatory") String specialization,
+			@Min(value = 0, message = "Experience should be positive") int experienceYears,
+			@NotBlank(message = "Phone number is mandatory") String phoneNumber,
+			@NotBlank(message = "Availability schedule is mandatory") String availabilitySchedule, Long hospitalId,
+			@NotBlank(message = "MCR number is mandatory") String mcrNumber,
+			@NotNull(message = "Date of birth is required") LocalDate dob, Role role, Gender gender) {
+		super();
+		this.doctorId = doctorId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.specialization = specialization;
+		this.experienceYears = experienceYears;
+		this.phoneNumber = phoneNumber;
+		this.availabilitySchedule = availabilitySchedule;
+		this.hospitalId = hospitalId;
+		this.mcrNumber = mcrNumber;
+		this.dob = dob;
+		this.role = role;
+		this.gender = gender;
+	}
 
-    public DoctorEntity(Long doctorId) {
+
+
+	public DoctorEntity(Long doctorId) {
         this.doctorId = doctorId;
     }
     // Getters and Setters
-    public long getDoctorId() {
+    public Long getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(long doctorId) {
+    public void setDoctorId(Long doctorId) {
         this.doctorId = doctorId;
     }
 
@@ -160,11 +171,11 @@ public class DoctorEntity {
         this.availabilitySchedule = availabilitySchedule;
     }
 
-    public long getHospitalId() {
+    public Long getHospitalId() {
         return hospitalId;
     }
 
-    public void setHospitalId(long hospitalId) {
+    public void setHospitalId(Long hospitalId) {
         this.hospitalId = hospitalId;
     }
 
@@ -199,4 +210,12 @@ public class DoctorEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public LocalDate getDob() {
+		return dob;
+	}
+
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
+	}
 }

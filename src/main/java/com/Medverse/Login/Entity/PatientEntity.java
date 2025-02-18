@@ -2,7 +2,6 @@ package com.Medverse.Login.Entity;
 
 import java.time.LocalDate;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,7 +20,7 @@ public class PatientEntity {
 	
 	  // Parameterized Constructor
     public PatientEntity(Long userId, String firstName, String lastName, String email, String password,
-                              String phoneNumber, String address, LocalDate dob, Gender gender, String profilePic, Role role) {
+                              String phoneNumber, String address, LocalDate dob, Gender gender, Long aadhar, Role role) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,7 +30,7 @@ public class PatientEntity {
         this.address = address;
         this.dob = dob;
         this.gender = gender;
-        this.profilePic = profilePic;
+        this.aadhar = aadhar;
         this.role = role;
     }
       
@@ -76,15 +75,19 @@ public class PatientEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
-
-    private String profilePic;
+    
+    @NotNull(message = "Aadhar is required")
+    @Column(nullable = false, unique = true)
+    private Long aadhar;
 
     @NotNull(message = "Role is required")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
  
-    
+    public PatientEntity(Long userId) {
+        this.userId = userId;
+    }
 
 	// Getters and Setters
     public Long getUserId() {
@@ -159,12 +162,12 @@ public class PatientEntity {
         this.gender = gender;
     }
 
-    public String getProfilePic() {
-        return profilePic;
+    public Long getAadhar() {
+        return aadhar;
     }
 
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+    public void setAadhar(Long aadhar) {
+        this.aadhar = aadhar;
     }
 
     public Role getRole() {
@@ -180,7 +183,7 @@ public class PatientEntity {
     public String toString() {
         return "RegistrationEntity [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", email=" + email + ", password=" + password + ", phoneNumber=" + phoneNumber + ", address="
-                + address + ", dob=" + dob + ", gender=" + gender + ", profilePic=" + profilePic + ", role=" + role
+                + address + ", dob=" + dob + ", gender=" + gender + ", aadhar=" + aadhar + ", role=" + role
                 + "]";
     }
 
@@ -189,6 +192,6 @@ public class PatientEntity {
         Male, Female, Other
     }
     public enum Role {
-        Patient, Doctor, Admin
+        Patient, Doctor, Hospital
     }
 }

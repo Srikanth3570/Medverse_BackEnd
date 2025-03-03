@@ -1,18 +1,28 @@
 package com.Medverse.Login.controller;
 
-import com.Medverse.Login.Entity.DoctorDocument;
-import com.Medverse.Login.Entity.PatientDocument;
-import com.Medverse.Login.Entity.PatientEntity;
-import com.Medverse.Login.Entity.DoctorEntity;
-import com.Medverse.Login.Service.DocumentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import com.Medverse.Login.Entity.DoctorDocument;
+import com.Medverse.Login.Entity.DoctorEntity;
+import com.Medverse.Login.Entity.PatientDocument;
+import com.Medverse.Login.Entity.PatientEntity;
+import com.Medverse.Login.Repo.RegistrationRepo;
+import com.Medverse.Login.Service.DocumentService;
 
 @RestController
 @RequestMapping("/documents")
@@ -23,8 +33,37 @@ public class DocumentController {
 
     @Autowired
     private DocumentService documentService;
+    
+    @Autowired
+    private RegistrationRepo patientRepo;
+    
 
     // ✅ Patient uploads document
+    
+    @PostMapping("/patient/upload")
+    public ResponseEntity<String> uploadPatientDocument(@RequestParam("patientId") Long patientId,
+                                                       @RequestParam("file") MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("File is empty. Please upload a valid file.");
+            }
+
+            // Fetch patient from database
+            PatientEntity patient = patientRepo.findById(patientId)
+                    .orElseThrow(() -> new RuntimeException("Patient not found with ID: " + patientId));
+
+            documentService.uploadPatientDocument(patient, file);
+
+            return ResponseEntity.ok("Document uploaded successfully!");
+        } catch (RuntimeException e) {
+            logger.error("Patient not found: {}", e.getMessage());
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            logger.error("Failed to upload patient document: ", e);
+            return ResponseEntity.internalServerError().body("Error uploading document: " + e.getMessage());
+        }
+    }
+
 
 
     // ✅ Doctor uploads document for patient
